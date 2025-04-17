@@ -24,6 +24,12 @@ Illumina             |  ONT
 ![Illumina Sequencing](https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/illumina.png) |  ![ONT sequencing](https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/nanopore-2.png)
 [*Source*](https://praxilabs.com/en/blog/2021/02/08/dna-sequencing-definition-importance-methods-facts-and-more/) | [*Source*](https://quickbiology.com/ngs-service-provider/oxford-nanopore-sequencing-new-service-quick-biology-inc)
 
+Illumina sequencing relies on bridge amplification of the existing DNA to produce a robust, detectable fluorescent signal that is translated into a DNA sequence. ONT sequencing does not amplify DNA, so you only read native DNA sequences. Most importantly for DiMeLo-seq, ONT sequencing determines the base at each position along a DNA strand based on how it disrupts the ionic current passing through the nanopore. This enables the identification of modified DNA bases, such as  5-methylcytosine (DNA methylation) or N6-methyl-deoxyadenosine (mA). 
+
+![Illumina Sequencing](https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/illumina.png) |  ![ONT sequencing](https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/nanopore-2.png)
+
+Raw ONT data is output in .pod5 (new) or .fast5 (old) formats and represents the raw changes in current measured at a given nanopore over the length of a DNA molecule passing through the nanopore. To translate that into a DNA sequence, we apply basecalling models that identify characteristic changes in current as different DNA bases,  producing long read sequences in .fasta format. There are currently basecalling mdoels to identify 5mC, 5hmC, 4mC + 5mC and 6mA for DNA and m6A and pseudouridine for RNA.  
+
 Modified basecalling
 
 Go into R10 chip analysis
@@ -31,5 +37,7 @@ Go into R10 chip analysis
 Should be simpler than others
 
 Talk about visualizing the data
+
+Making an evironment
 
 And visualizing the data on IGV interactive session on CRC cluster
