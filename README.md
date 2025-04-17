@@ -43,17 +43,17 @@ While ONT is generally thought to be less accurate than PacBio long read sequenc
 | 50	| 1 in 100,000	| 99.999% |
 | 60	| 1 in 1,000,000	| 99.9999% |
 
-ONT's modified basecalling is also exceedingly accurate, with DNA methylation being identified with an accuracy that exceeds Bisulfite sequencing, which is considered to be the [most accurate method](https://pmc.ncbi.nlm.nih.gov/articles/PMC3233226/) for identifying DNA methylation. 
+ONT's modified basecalling is also exceedingly accurate, with DNA methylation being identified with an accuracy that meets or surpasses Bisulfite sequencing, which is considered to be the [most accurate method](https://pmc.ncbi.nlm.nih.gov/articles/PMC3233226/) for identifying DNA methylation. 
 
 <div align="center">
  <img src="https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/bisulfite_ont.png" alt="mCG accuracy" style="width:50%; height:50%;">
 </div>
 
 
-
+## DiMeLo-seq data analysis
 Raw ONT data is output in .pod5 (new) or .fast5 (old) formats and represents the raw changes in current measured at a given nanopore over the length of a DNA molecule passing through the nanopore. To translate that into a DNA sequence, we apply basecalling models that identify characteristic changes in current as different DNA bases,  producing long read sequences in .fasta format. There are currently basecalling mdoels to identify 5mC, 5hmC, 4mC + 5mC and 6mA for DNA and m6A and pseudouridine for RNA.  
 
-Modified basecalling
+Most ONT data analysis uses ONT-specific tools. The current tool for basecalling is Dorado. 
 
 Go into R10 chip analysis
 
