@@ -51,9 +51,27 @@ ONT's modified basecalling is also exceedingly accurate, with DNA methylation be
 
 
 ## DiMeLo-seq data analysis
+Now that we have an idea what we are analyzing, let's talk about the data itself.
+
 Raw ONT data is output in .pod5 (new) or .fast5 (old) formats and represents the raw changes in current measured at a given nanopore over the length of a DNA molecule passing through the nanopore. To translate that into a DNA sequence, we apply basecalling models that identify characteristic changes in current as different DNA bases,  producing long read sequences in .fasta format. There are currently basecalling mdoels to identify 5mC, 5hmC, 4mC + 5mC and 6mA for DNA and m6A and pseudouridine for RNA.  
 
-Most ONT data analysis uses ONT-specific tools. The current tool for basecalling is Dorado. 
+Most ONT data analysis uses ONT-specific tools. The current tool for basecalling is **Dorado**. Basecalling is a resource-intensive process, so **Dorado** is built to be run on a graphical processing unit (GPU). CPUs (Central Processing Units) and GPUs (Graphics Processing Units) are both computing engines, but they are best used for different types of tasks. CPUs are designed for general-purpose computing, while GPUs are optimized for parallel processing and tasks that involve large datasets. This means that when we submit a script to the CRC cluster to perform basecalling with **Dorado**, we must request that it be run on the GPU computing cluster. 
+
+```
+#!/bin/bash
+#SBATCH --job-name=dorado_basecalling
+#SBATCH --cluster=gpu
+#SBATCH --partition=a100
+#SBATCH --nodes=1 
+#SBATCH --ntasks-per-node=2 
+#SBATCH --cpus-per-task=16 
+#SBATCH --time=48:00:00 
+#SBATCH --error=/path/to/error/job.%J.err
+#SBATCH --output=/path/to/output/job.%J.out
+```
+
+Dorado is pretty simple to use (if you don't care about centromeres that much). **Dorado** can basecall your .pod5 raw data and align to an assembly of your choice all at once. Alignment will be performed using minimap2, an alignment tool built specifically for long-read data. However, there is another alignment tool called winnowmap that performs better in repetitive regions like centromeres. To align your basecalled .fastq files with winnowmap, you need to perform several additional steps, detailed [here]. 
+
 
 Go into R10 chip analysis
 
