@@ -17,7 +17,7 @@ The $$\textnormal{\color{green}DiMeLo-seq}$$ technique starts with binding an an
 
 Please refer to [this paper](https://www.nature.com/articles/s41592-022-01475-6) for more information about DimeLo-seq.
 
-DiMeLo-seq is built upon Oxford Nanopore Technologies sequencing platforms that allow for sequecing of continuous ultra-long DNA molecules. This approach is different than a traditional short read sequencing approach, like Illumina sequencing. 
+DiMeLo-seq is built upon Oxford Nanopore Technologies (ONT) sequencing platforms that allow for sequecing of continuous ultra-long DNA molecules. This approach is different than a traditional short read sequencing approach, like Illumina sequencing. 
 
 Illumina             |  ONT
 :-------------------------:|:-------------------------:
