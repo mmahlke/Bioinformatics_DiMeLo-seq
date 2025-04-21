@@ -217,6 +217,24 @@ Now let's view the data that it created for us. We can download the files with v
 
 Lastly, we can also visualize the data stored in the .bam file interactively on IGV. But the file is much too large for us to download it and view it on our own computer using the IGV web app. We can view it by requesting an interactive session through [OnDemand](https://ondemand.htc.crc.pitt.edu/) connected to the CRC cluster. 
 
+<div align="center">
+ <img src="https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/ondemand.png" alt="OnDemand" style="width:50%; height:50%;">
+</div>
 
+Once you log on, navigate to Interactive Apps and to IGV on htc.
 
+<div align="center">
+ <img src="https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/IGV_ondemand.png" alt="Using IGV on htc" style="width:80%; height:80%;">
+</div>
 
+Specify the resources you want to use:
+
+<div align="center">
+ <img src="https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/IGV_on_htc.png" alt="Requesting resources" style="width:80%; height:80%;">
+</div>
+
+Here is an example of an aligned .bam with mA in green and mC in red. The location is HOR1 on PDNC4 Chr4. Can you tell where the active centromere is? You can see the high variability in CENP-A position even within the reads from one young clone. 
+
+<div align="center">
+ <img src="https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/active_cen4.png" alt="Dimelo at CEN4" style="width:100%; height:100%;">
+</div>
