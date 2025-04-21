@@ -126,7 +126,7 @@ OK, our command to ```Dorado``` has run successfully and we now have a .bam file
 
 ## SAM and BAM tags
 
-Recall that .sam and .bam files are file types that have .fasta reads aligned to a genome assembly. The structure of .sam/.bam files are also discussed discussed [here]( [linktoprevious]). 
+Recall that .sam and .bam files are file types that have .fasta reads aligned to a genome assembly. The structure of .sam/.bam files are also discussed [here]( [linktoprevious]). 
 
 You can read more about .sam structure [here](https://samtools.github.io/hts-specs/SAMv1.pdf) and about .sam tags [here](https://samtools.github.io/hts-specs/SAMtags.pdf).
 
@@ -158,12 +158,83 @@ The fields of the above .sam file are tab-delineated and give values for:
 
 ## Making a virtual environment and visualizing modified bases
 
-For this training, we will use ```dimelo``` package to access the modification data for us! Read more about the dimelo package [here](https://github.com/streetslab/dimelo). 
+For this training, we will use ```dimelo``` package to access the modification data for us! Read more about the dimelo package [here](https://streetslab.github.io/dimelo/html/index.html) and access the package [here](https://github.com/streetslab/dimelo). 
 
 ```dimelo``` visualization package is not pre-installed on the CRC cluster. We can install it in our own space by creating a virtual environment. A virtual environment is like a containerized test space that is on the CRC cluster but separated from the CRC cluster. It's a bit like "they can't mess with us" and "we can't mess with them", so everyone is safe. By safe, I mean safe to install new packages, test scripts, etc without harming the existing CRC infrastructure. Once we build our virtual environment, we can install the ```dimelo``` package there and run it on our data. 
 
-making a virtual environment is a function of ```Python```. Python is 
+Making a virtual environment is a function of ```Python```. Python is a programming language. For other analyses, we have used the command-line interface to communicate directly to Linux/Unix, the CRC's operating system. ```Python``` adds a communication layer that allows us to generate more complex instructions or 'programs'. For instance, the ```dimelo``` package is written in ```Python``` programming language. 
 
-Making an evironment
+Let's set up a virtual environment with ```Python``` and install the ```dimelo``` package. 
 
-And visualizing the data on IGV interactive session on CRC cluster
+Log in to the cluster and request an interactive session on the htc cluster specifically.
+
+```
+srun -t 2:00:00 --cluster htc --partition htc --cpus-per-task 8 --pty bash
+```
+First, we need to get a copy of the dimelo package.
+
+```
+cd /ix1/yarbely/<your_user>
+git clone https://github.com/streetslab/dimelo.git
+```
+You should see a folder appear in ```/ix1/yarbely/<your_user>``` called ```dimelo```. That contains everything needed to install the ```dimelo``` package, including instructions on all the dependencies (other tools/packages) needed to run ```dimelo```. These instructions are saved in a .yml file. 
+
+Next, we need to load python. The ```dimelo``` package is compatible with ```python/3.7.0```.
+```
+module load python/3.7.0
+```
+Now we use ```python``` to make our virtual environment.
+
+```
+cd /ix1/yarbely/<your_user>/dimelo
+conda env create -f environment_linux.yml -p /ix1/yarbely/<your_user>/envs/dimelo_vis
+```
+Where:
++ ```conda env create``` is the command to create the virtual environment itself
++ ```-f environment_linux.yml``` is a file that specifies everything that needs to be set up for the virtual environment. It was included within the ```dimelo``` package
++ ```-p /ix1/yarbely/<your_user>/envs/dimelo_vis``` is the location to create the virtual environment. By default, packages are installed in ```/ihome``` but that has limited space, so we can specify a path. The last argument is the name of the virtual environment. 
+
+This might take some time. 
+
+Now activate your virtual environment.
+```
+source activate /ix1/yarbely/<your user name>/envs/dimelo_vis
+```
+You can tell you are operating within your virtual environment because there is a prefix before your command prompt that looks like:
+```
+(dimelo_vis)[user@htc-n2-013]$
+```
+Now we can install the ```dimelo``` package into our virtual environment. Installation instructions for this package are [here](https://streetslab.github.io/dimelo/html/content/installation.html). You may notice that this package is depricated. That means no one is working to maintain it anymore. There is a new package being developed but as of now, it is not publicly available. I encourage you to contact the package makers to get a copy of the newer package to test for your data. 
+
+To install the package:
+```
+cd /ix1/yarbely/<your_user>/dimelo
+pip install .
+```
+And now the ```dimelo``` package is installed in our virtual environment called ```dimelo_vis```. 
+
+To run the pacakge, we need to first initiate ```python``` because the package is written in ```python```. We loaded the python module before, but now we are giving the module a command to start.
+```
+python
+```
+We can tell that the python laguage interpreter is running in the environment now because the command prompt changed from ```$   ``` to ```>  ```. 
+
+So let's speak to the dimelo package in python. 
+
+```
+import dimelo as dm
+```
+Tells python to import dimelo commands and recognize them as ```dm```.
+
+Now, we command dimelo package to prepare some figures for us. 
+
+```
+dm.plot_browser("/ix1/yarbely/mam835/Dimelo/Ragini/HeLaLT/mC/HelaLT_mC_guppy_winnowmap_merge_sorted.bam", "mCpG", "NC_060928.1:193568945-193574945", "CG", "/ix1/yarbely/mam835/Dimelo/Ragini/HeLaLT/mC/Chr4_q", colorC='#053C5E', threshA=205, dotsize=2, static=True)
+
+dm.plot_browser("/ix1/yarbely/mam835/Dimelo/Ragini/IMR90CTRL/mA/IMR90CTRL_mA_guppy_winnowmap_merge_sorted.bam", "CENPA", "NC_060939.1:99747195-99753195", "A", "/ix1/yarbely/mam835/Dimelo/Ragini/IMR90CTRL/mA/Chr15_q", colorC='#cc322f', threshA=205, dotsize=2, static=True)
+```
+Now let's view the data that it created for us. We can download the files with visual information and leave the large tables behind. 
+
+Lastly, we can also visualize the data stored in the .bam file interactively on IGV. But the file is much too large for us to download it and view it on our own computer using the IGV web app. We can view it using an IGV interactive session connected to the CRC cluster. 
+
+
