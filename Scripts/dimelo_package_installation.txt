@@ -13,6 +13,8 @@ git clone https://github.com/streetslab/dimelo.git
 ### What we are doing is telling the installer that instead of installing release 0.0.33 of sorted-nearest, install the newer release, version 0.0.39
 ### We can also change the name of the environment at the top of the file to `dimelo_vis`. 
 
+## We will also change the setup.py file to modify sorted-nearest==0.0.33 to sorted-nearest==0.0.39
+
 # Next, we need to load python. The dimelo package is compatible with python/3.7.0.
 
 module load python/3.7.0
