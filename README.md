@@ -117,7 +117,6 @@ We are using the default **modified base threshold (0.05)** built in to ```Dorad
 You can also supply options to the ```minimap2``` aligner within ```Dorado``` by adding a string like:
 ```
 dorado basecaller --mm2-opts "-k 15 -w 100 -Y -I 8G" hac,5mC_5hmC,6mA \
-
 ```
 Where -k and -w set kmer and window size respectively, and -Y turns on soft-clipping. ```minimap2``` in ```dorado``` uses hard-clipping which can invalidate modified basecalling for reads that fail to align perfectly, so be sure to test for your dataset. ```-I 8G``` controls the index size and memory usage. Read more about ```minimap2``` options [here](https://lh3.github.io/minimap2/minimap2.html).
 
@@ -126,7 +125,7 @@ OK, our command to ```Dorado``` has run successfully and we now have a .bam file
 
 ## SAM and BAM tags
 
-Recall that .sam and .bam files are file types that have .fasta reads aligned to a genome assembly. The structure of .sam/.bam files are also discussed [here]( [linktoprevious]). 
+Recall that .sam and .bam files are file types that have .fasta reads aligned to a genome assembly. The structure of .sam/.bam files are also discussed in the previous training session [here]( [linktoprevious]). 
 
 You can read more about .sam structure [here](https://samtools.github.io/hts-specs/SAMv1.pdf) and about .sam tags [here](https://samtools.github.io/hts-specs/SAMtags.pdf).
 
@@ -146,7 +145,7 @@ The fields of the above .sam file are tab-delineated and give values for:
 3. ```PDNC4_CHR4_HAP2``` name of chromosome or contig the read is aligned to
 4. ```50427127``` -1 based position where the start of the read aligns to the chromosome or contig
 5. ```0``` MAPQ mapping quality, 0 value indicates the read maps to other locations (repetitive cens)
-6. ```89S23=1D21......``` CIGAR string 
+6. ```89S23=1D21......``` [CIGAR](https://jef.works/blog/2017/03/28/CIGAR-strings-for-dummies/) string, how the SAM/BAM format represents spliced alignments with insertions or deletions 
 7. ```*``` RNEXT, reference seq info for the next/paired read. * for no info, these reads are not paired
 8. ```0``` PNEXT, positional infor for the next read
 9. ```528``` TLEN, template length, distance between the leftmost and rightmost mapped bases of a sequenced DNA fragment
@@ -160,7 +159,7 @@ The fields of the above .sam file are tab-delineated and give values for:
 
 For this training, we will use ```dimelo``` package to access the modification data for us! Read more about the dimelo package [here](https://streetslab.github.io/dimelo/html/index.html) and access the package [here](https://github.com/streetslab/dimelo). 
 
-```dimelo``` visualization package is not pre-installed on the CRC cluster. We can install it in our own space by creating a virtual environment. A virtual environment is like a containerized test space that is on the CRC cluster but separated from the CRC cluster. It's a bit like "they can't mess with us" and "we can't mess with them", so everyone is safe. By safe, I mean safe to install new packages, test scripts, etc without harming the existing CRC infrastructure. Once we build our virtual environment, we can install the ```dimelo``` package there and run it on our data. 
+```dimelo``` visualization package is not pre-installed on the CRC cluster. We can install it in our own space by creating a virtual environment. A virtual environment is like a containerized test space that is on the CRC cluster but separated from the CRC cluster. It's a bit like "they can't mess with us" and "we can't mess with them", so everyone is safe. By safe, I mean safe to install new packages, test scripts, etc without harming the existing CRC infrastructure or running into complications from interacting with the CRC infrastructure. Once we build our virtual environment, we can install the ```dimelo``` package there and run it on our data. 
 
 Making a virtual environment is a function of ```Python```. Python is a programming language. For other analyses, we have used the command-line interface to communicate directly to Linux/Unix, the CRC's operating system. ```Python``` adds a communication layer that allows us to generate more complex instructions or 'programs'. For instance, the ```dimelo``` package is written in ```Python``` programming language. 
 
