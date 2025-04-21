@@ -1,0 +1,63 @@
+###First, we need to get a copy of the dimelo package.
+
+cd /ix1/yarbely/<your_user>
+git clone https://github.com/streetslab/dimelo.git
+
+# You should see a folder appear in /ix1/yarbely/<your_user> called 'dimelo'. 
+## That contains everything needed to install the dimelo package, including instructions on all the dependencies (other tools/packages) needed to run dimelo. 
+## These instructions are saved in a .yml file. 
+
+## I know that this .yml file has a weird issue with one particular package called sorted-nearest==0.0.33 
+### to avoid that issue, we will go in and edit the .yml file. So let's open the file. 
+### edit the file to change `sorted-nearest==0.0.33` to `sorted-nearest==0.0.39`
+### What we are doing is telling the installer that instead of installing release 0.0.33 of sorted-nearest, install the newer release, version 0.0.39
+### We can also change the name of the environment at the top of the file to `dimelo_vis`. 
+
+# Next, we need to load python. The dimelo package is compatible with python/3.7.0.
+
+module load python/3.7.0
+
+# Now we use python to make our virtual environment.
+
+# Change to the directory where we downloaded the dimelo package and instructions
+
+cd /ix1/yarbely/<your_user>/dimelo
+
+# Create a virtual environment using the edited instructions file (.yml)
+
+conda env create -f environment_linux.yml -p /ix1/yarbely/<your_user>/envs/dimelo_vis
+
+# Where:
+### conda env create is the command to create the virtual environment itself
+### -f environment_linux.yml is a the file that specifies everything that needs to be set up for the virtual environment
+### -p /ix1/yarbely/<your_user>/envs/dimelo_vis is the location to create the virtual environment
+
+# By default, packages are installed in /ihome but that has limited space, so we can specify a path where last directory is the name of the virtual environment 
+
+# This might take some time. 
+
+# Now activate your virtual environment.
+
+source activate /ix1/yarbely/<your user name>/envs/dimelo_vis
+
+# You can tell you are operating within your virtual environment because there is a prefix before your command prompt that looks like:
+
+##  (dimelo_vis)[user@htc-n2-013]$
+
+# Now we can install the dimelo package into our virtual environment. Installation instructions for this package are here (https://streetslab.github.io/dimelo/html/content/installation.html)
+## You will notice that the steps are not identical to what I've shown here, I've adapted the steps to work for this environment 
+
+# You may also notice that this package is depricated. That means no one is working to maintain it anymore. There is a new package being developed but as of now, it is not publicly available. 
+## I encourage you to contact the package makers to get a copy of the newer package to test for your data. 
+
+# To install the package:
+
+# make sure we are in the directory with the package in it
+
+cd /ix1/yarbely/<your_user>/dimelo
+
+#install the package from our current directory to our virtual environment
+
+pip install .
+
+### And now the dimelo package is installed in our virtual environment called dimelo_vis 
