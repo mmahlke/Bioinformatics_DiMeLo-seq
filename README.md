@@ -171,52 +171,23 @@ Log in to the cluster and request an interactive session on the htc cluster spec
 ```
 srun -t 2:00:00 --cluster htc --partition htc --cpus-per-task 8 --pty bash
 ```
-First, we need to get a copy of the dimelo package.
+To keep things simple, I've installed the ```dimelo``` package into a virtual environment called ```dimelo_vis``` in the training directory. 
+Please test if you can use the package here. If not, install into your own working directory using the instructions linked [here](https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Scripts/dimelo_package_installation.txt).
 
-```
-cd /ix1/yarbely/<your_user>
-git clone https://github.com/streetslab/dimelo.git
-```
-You should see a folder appear in ```/ix1/yarbely/<your_user>``` called ```dimelo```. That contains everything needed to install the ```dimelo``` package, including instructions on all the dependencies (other tools/packages) needed to run ```dimelo```. These instructions are saved in a .yml file. 
-
-Next, we need to load python. The ```dimelo``` package is compatible with ```python/3.7.0```.
+To run the pacakge, we need to first initiate ```python``` because the package is written in ```python```. We loaded the python module before, but now we are giving the module a command to start.
 ```
 module load python/3.7.0
-```
-Now we use ```python``` to make our virtual environment.
-
-```
-cd /ix1/yarbely/<your_user>/dimelo
-conda env create -f environment_linux.yml -p /ix1/yarbely/<your_user>/envs/dimelo_vis
-```
-Where:
-+ ```conda env create``` is the command to create the virtual environment itself
-+ ```-f environment_linux.yml``` is a file that specifies everything that needs to be set up for the virtual environment. It was included within the ```dimelo``` package
-+ ```-p /ix1/yarbely/<your_user>/envs/dimelo_vis``` is the location to create the virtual environment. By default, packages are installed in ```/ihome``` but that has limited space, so we can specify a path. The last argument is the name of the virtual environment. 
-
-This might take some time. 
-
-Now activate your virtual environment.
-```
-source activate /ix1/yarbely/<your user name>/envs/dimelo_vis
+source activate /ix1/yarbely/Data/Training/envs/dimelo_vis
 ```
 You can tell you are operating within your virtual environment because there is a prefix before your command prompt that looks like:
 ```
 (dimelo_vis)[user@htc-n2-013]$
-```
-Now we can install the ```dimelo``` package into our virtual environment. Installation instructions for this package are [here](https://streetslab.github.io/dimelo/html/content/installation.html). You may notice that this package is depricated. That means no one is working to maintain it anymore. There is a new package being developed but as of now, it is not publicly available. I encourage you to contact the package makers to get a copy of the newer package to test for your data. 
-
-To install the package:
-```
-cd /ix1/yarbely/<your_user>/dimelo
-pip install .
-```
-And now the ```dimelo``` package is installed in our virtual environment called ```dimelo_vis```. 
-
-To run the pacakge, we need to first initiate ```python``` because the package is written in ```python```. We loaded the python module before, but now we are giving the module a command to start.
+``` 
+Now we need to activate python with the command:
 ```
 python
 ```
+
 We can tell that the python laguage interpreter is running in the environment now because the command prompt changed from ```$   ``` to ```>  ```. 
 
 So let's speak to the dimelo package in python. 
