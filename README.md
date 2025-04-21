@@ -146,7 +146,7 @@ The fields of the above .sam file are tab-delineated and give values for:
 3. ```PDNC4_CHR4_HAP2``` name of chromosome or contig the read is aligned to
 4. ```50427127``` -1 based position where the start of the read aligns to the chromosome or contig
 5. ```0``` MAPQ mapping quality, 0 value indicates the read maps to other locations (repetitive cens)
-6. ```89S23=1D21......``` CIGAR string
+6. ```89S23=1D21......``` CIGAR string 
 7. ```*``` RNEXT, reference seq info for the next/paired read. * for no info, these reads are not paired
 8. ```0``` PNEXT, positional infor for the next read
 9. ```528``` TLEN, template length, distance between the leftmost and rightmost mapped bases of a sequenced DNA fragment
@@ -187,16 +187,13 @@ Now we need to activate python with the command:
 ```
 python
 ```
-
 We can tell that the python laguage interpreter is running in the environment now because the command prompt changed from ```$   ``` to ```>  ```. 
 
 So let's speak to the dimelo package in python. 
-
+First, we tell ```dimelo``` package to import dimelo commands and recognize them as ```dm```.
 ```
 import dimelo as dm
 ```
-Tells python to import dimelo commands and recognize them as ```dm```.
-
 Now, we command dimelo package to prepare some figures for us. 
 
 ```
@@ -204,8 +201,23 @@ dm.plot_browser("/ix1/yarbely/mam835/Dimelo/Ragini/HeLaLT/mC/HelaLT_mC_guppy_win
 
 dm.plot_browser("/ix1/yarbely/mam835/Dimelo/Ragini/IMR90CTRL/mA/IMR90CTRL_mA_guppy_winnowmap_merge_sorted.bam", "CENPA", "NC_060939.1:99747195-99753195", "A", "/ix1/yarbely/mam835/Dimelo/Ragini/IMR90CTRL/mA/Chr15_q", colorC='#cc322f', threshA=205, dotsize=2, static=True)
 ```
+Where:
++ the first argument is the path to your .bam file
++ ```mCpG``` specifies the title of the graphs
++ ```Chr:1-999``` specifies the corrdinates to sample
++ ```CG``` specifies the modification to sample
++ ```path/out``` specifies the folder to place the results
++ ```color``` is the color to use for the dots and the line graphs
++ ```thresh*=205``` specifies the probability threshold to use. 205 = 80% likely. Anything below will not be included.
++ ```dotsize``` specifies the size of the dots in the genome browser plot showing individual reads
++ ```static=True``` allows the output to be written to a .pdf file rather than to be generated interactively in the terminal
+
 Now let's view the data that it created for us. We can download the files with visual information and leave the large tables behind. 
 
-Lastly, we can also visualize the data stored in the .bam file interactively on IGV. But the file is much too large for us to download it and view it on our own computer using the IGV web app. We can view it using an IGV interactive session connected to the CRC cluster. 
+## Viewing large data interactively with OnDemand and IGV
+
+Lastly, we can also visualize the data stored in the .bam file interactively on IGV. But the file is much too large for us to download it and view it on our own computer using the IGV web app. We can view it by requesting an interactive session through [OnDemand](https://ondemand.htc.crc.pitt.edu/) connected to the CRC cluster. 
+
+
 
 
