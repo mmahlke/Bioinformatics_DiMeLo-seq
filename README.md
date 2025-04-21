@@ -91,7 +91,7 @@ Here is an examble of the SBATCH header for a script requesting to use CRC's GPU
 #SBATCH --output=/path/to/output/job.%J.out
 ```
 
-```Dorado``` is pretty simple to use (if you don't care about centromeres that much). ```Dorado``` can basecall .pod5 raw data and align to an assembly of your choice all at once. Alignment will be performed using [minimap2](https://github.com/lh3/minimap2), an alignment tool built specifically for long-read data. However, there is another alignment tool called [winnowmap](https://github.com/marbl/Winnowmap) that performs better in repetitive regions like centromeres. To align your basecalled .fasta files with winnowmap, you need to perform several additional steps, detailed [here](insert link to script). 
+```Dorado``` is pretty simple to use. ```Dorado``` can basecall .pod5 raw data and align to an assembly of your choice all at once. Alignment will be performed using [minimap2](https://github.com/lh3/minimap2), an alignment tool built specifically for long-read data. However, there is another alignment tool called [winnowmap](https://github.com/marbl/Winnowmap), essentially a tweaked version of minimap designed to perform in repetitive regions like centromeres. However, in my hands, I've found winnowmap and minimap to perform similaryl at centromeres, but winnowmap to perform poorly outside of repetitive regions. To avoid complicating your analysis, I suggest aligning with minimap2 unless you find an issue with your data.
 
 A typical set of instructions for ```Dorado``` are:
 
