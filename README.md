@@ -106,8 +106,8 @@ dorado basecaller hac,5mC_5hmC,6mA \
 --verbose > sample_name.bam
 
 ```
-where
-+ ```hac,5mC_5hmC,6mA``` spicifies to perform basecalling with the high-accuracy basecalling model ```hac``` and to include detection of both 5mC/5hmC in CG contexts and 6mA in all contexts
+Where
++ ```hac,5mC_5hmC,6mA``` specifies to perform basecalling with the high-accuracy basecalling model ```hac``` and to include detection of both 5mC/5hmC in CG contexts and 6mA in all contexts
 + ```--reference``` specifies the assembly to align to after basecalling
 + ```--verbose ``` specifies to give verbose output
 + ```sample_name.bam``` is the name we want to give the resulting aligned .bam file
