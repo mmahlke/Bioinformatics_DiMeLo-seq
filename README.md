@@ -72,7 +72,7 @@ Now that we have an idea what we are analyzing, let's talk about the data itself
 
 ## $$\textnormal{\color{green}DiMeLo-seq}$$ data analysis
 
-Raw $$\textnormal{\color{skyblue}ONT}$$ data is output in .pod5 (new) or .fast5 (old) formats and represents the raw changes in current measured at a given nanopore over the length of a DNA molecule passing through the nanopore. To translate that into a DNA sequence, we apply basecalling models that identify characteristic changes in current as different DNA bases,  producing long read sequences in .fastq format. There are currently basecalling mdoels to identify 5mC, 5hmC, 4mC + 5mC and 6mA for DNA and m6A and pseudouridine for RNA.  
+Raw $$\textnormal{\color{skyblue}ONT}$$ data is output in .pod5 (new) or .fast5 (old) formats and represents the raw changes in current measured at a given nanopore over the length of a DNA molecule passing through the nanopore. To translate that into a DNA sequence, we apply basecalling models that identify characteristic changes in current as different DNA bases,  producing long read sequences in .fasta format. There are currently basecalling models to identify 5mC, 5hmC, 4mC + 5mC and 6mA for DNA and m6A and pseudouridine for RNA.  
 
 Most $$\textnormal{\color{skyblue}ONT}$$ data analysis uses $$\textnormal{\color{skyblue}ONT}$$-specific tools. The current tool for basecalling is [Dorado](https://github.com/nanoporetech/dorado). Basecalling is a resource-intensive process, so ```Dorado``` is built to be run on a graphical processing unit (GPU). **CPUs** (Central Processing Units) and **GPUs** (Graphics Processing Units) are both computing engines, but they are best used for different types of tasks. **CPUs** are designed for general-purpose computing, while **GPUs** are optimized for parallel processing and tasks that involve large datasets. This means that when we submit a script to the CRC cluster to perform basecalling with ```Dorado```, we must request that it be run on the GPU computing cluster. 
 
@@ -154,6 +154,23 @@ The fields of the above .sam file are tab-delineated and give values for:
 12. ```MM:Z```  identifies modified bases. Here, ```C+h?``` reports the status of 5hmC and ```C+m?``` reports the status of 5mC. If mA is called, it's reported with ```A+a?```
 13. ```ML:B:C``` identifies the probability of each modification listed in the MM tag being correct. The continuous probability range 0.0 to 1.0 is remapped in equal sized portions to the discrete integers 0 to 255 inclusively. This is important for understanding how the values 0 to 255 encode to probability thresholds you may want to apply between probability 0 (unlikely) to probability 1.0 (certain).
 
+## Normalizing and defining enrichment
+
+One thing you may find to be missing at this stage is some sort of normalization or statistical peak calling. When we think about what we are interested in getting out of DiMeLo-seq, it's a bit more complicated than ChIP-seq or CUT&RUN. We aren't enriching for reads with a pull down and amplifying them. We are inferring the position of a protein along single strands of DNA. We know there will be variability (in the context of centromeric proteins, at least) and we expect that. Yet, we still want to know wehre the proteins are **most likely** to be enriched.
+
+Think about the data itself. Each base reports either modified or unmodified. At modified bases, we report a probability that the modification occurs. We filter out the bases with low probability. Next, we will measure the probable modifications at each position in each strand covering a region and calculate a fraction of enrichment. Theoretically, calculating a fraction of modified bases across a region should normalize for coverage level. 
+
+However, that won't always be perfect. There is no standardized normalization method for DiMelo-seq currently. 
+
+**Some approaches for determining enrichment are:**
+1) Using emperical data to set a threshold
+ + use other sequencing data to determine where your protein of interest is enriched genomically
+ + use the same location's values in your DiMeLo data to set a threshold to apply across the genome   
+2) Using fold enrichment to set a threshold
+ + You can extract the numbers of modified bases per position using [modkit](https://github.com/nanoporetech/modkit) to calculate enrichment values
+ + You can also use this to transform the data into .bw tracks representing enrichment values
+ + [fibertools](https://github.com/fiberseq/fibertools-rs) could also be useful for extracting raw data
+  + It's intended for determining the position of your protein of interest from the surrounding m6A signature 
 
 ## Making a virtual environment and visualizing modified bases
 
@@ -201,9 +218,9 @@ Now, we command dimelo package to prepare some figures for us. I've copied a fil
 Let's run these two commands:
 
 ```
-dm.plot_browser("/ix1/yarbely/mam835/Dimelo/Ragini/HeLaLT/mC/HelaLT_mC_guppy_winnowmap_merge_sorted.bam", "mCpG", "NC_060928.1:193568945-193574945", "CG", "/ix1/yarbely/mam835/Dimelo/Ragini/HeLaLT/mC/Chr4_q", colorC='#053C5E', threshA=205, dotsize=2, static=True)
+dm.plot_browser("/ix1/yarbely/Data/Training/D2Y_mCG.bam", "mCpG", "PDNC4_Hifiasm_chr4_hap1:79000000-79500000", "CG", "/ix1/yarbely/<your_user>/training/Dimelo/CG", colorC='#053C5E', threshA=205, dotsize=2, static=True)
 
-dm.plot_browser("/ix1/yarbely/mam835/Dimelo/Ragini/IMR90CTRL/mA/IMR90CTRL_mA_guppy_winnowmap_merge_sorted.bam", "CENPA", "NC_060939.1:99747195-99753195", "A", "/ix1/yarbely/mam835/Dimelo/Ragini/IMR90CTRL/mA/Chr15_q", colorC='#cc322f', threshA=205, dotsize=2, static=True)
+dm.plot_browser("/ix1/yarbely/Data/Training/D2Y_CENPA.bam", "CENPA", "PDNC4_Hifiasm_chr4_hap1:79000000-79500000", "A", "/ix1/yarbely/<your_user>/training/Dimelo/CENPA", colorC='#cc322f', threshA=205, dotsize=2, static=True)
 ```
 Where:
 + the first argument is the path to your .bam file
@@ -216,7 +233,7 @@ Where:
 + ```dotsize``` specifies the size of the dots in the genome browser plot showing individual reads
 + ```static=True``` allows the output to be written to a .pdf file rather than to be generated interactively in the terminal
 
-Now let's view the data that it created for us. We can download the files with visual information and leave the large tables behind. 
+Now let's view the data that it created for us.  
 
 ## Viewing large data interactively with OnDemand and IGV
 
