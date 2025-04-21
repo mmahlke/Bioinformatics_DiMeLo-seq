@@ -176,6 +176,9 @@ Please test if you can use the package here. If not, install into your own worki
 To run the pacakge, we need to first initiate ```python``` because the package is written in ```python```. We loaded the python module before, but now we are giving the module a command to start.
 ```
 module load python/3.7.0
+```
+Then we activate our virtual environment by using ```source activate``` and including a path to the environment location. 
+```
 source activate /ix1/yarbely/Data/Training/envs/dimelo_vis
 ```
 You can tell you are operating within your virtual environment because there is a prefix before your command prompt that looks like:
@@ -186,14 +189,16 @@ Now we need to activate python with the command:
 ```
 python
 ```
-We can tell that the python laguage interpreter is running in the environment now because the command prompt changed from ```$   ``` to ```>  ```. 
+We can tell that the python laguage interpreter is running in the environment now because the command prompt changed from ```$   ``` to ```>>>  ```. 
 
 So let's speak to the dimelo package in python. 
 First, we tell ```dimelo``` package to import dimelo commands and recognize them as ```dm```.
 ```
 import dimelo as dm
 ```
-Now, we command dimelo package to prepare some figures for us. 
+Now, we command dimelo package to prepare some figures for us. I've copied a file to the /Training directory that we can use to make some figures with. The path is specified below. 
+
+Let's run these two commands:
 
 ```
 dm.plot_browser("/ix1/yarbely/mam835/Dimelo/Ragini/HeLaLT/mC/HelaLT_mC_guppy_winnowmap_merge_sorted.bam", "mCpG", "NC_060928.1:193568945-193574945", "CG", "/ix1/yarbely/mam835/Dimelo/Ragini/HeLaLT/mC/Chr4_q", colorC='#053C5E', threshA=205, dotsize=2, static=True)
@@ -203,7 +208,7 @@ dm.plot_browser("/ix1/yarbely/mam835/Dimelo/Ragini/IMR90CTRL/mA/IMR90CTRL_mA_gup
 Where:
 + the first argument is the path to your .bam file
 + ```mCpG``` specifies the title of the graphs
-+ ```Chr:1-999``` specifies the corrdinates to sample
++ ```Chrx:1-999``` specifies the corrdinates to sample
 + ```CG``` specifies the modification to sample
 + ```path/out``` specifies the folder to place the results
 + ```color``` is the color to use for the dots and the line graphs
@@ -227,14 +232,22 @@ Once you log on, navigate to Interactive Apps and to IGV on htc.
  <img src="https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/IGV_ondemand.png" alt="Using IGV on htc" style="width:80%; height:80%;">
 </div>
 
+
 Specify the resources you want to use:
 
 <div align="center">
  <img src="https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/IGV_on_htc.png" alt="Requesting resources" style="width:80%; height:80%;">
 </div>
 
-Here is an example of an aligned .bam with mA in green and mC in red. The location is HOR1 on PDNC4 Chr4. Can you tell where the active centromere is? You can see the high variability in CENP-A position even within the reads from one young clone. 
+
+Here is an example of DiMeLo-seq data with mA in green and mC in red. The location is HOR1 on PDNC4 Chr4 Hap2, the copy of Chr4 with normal centromere. 
+
+Can you tell where the **active centromere** is? You can see the high variability in CENP-A position even within the reads from one young clone. 
 
 <div align="center">
  <img src="https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/active_cen4.png" alt="Dimelo at CEN4" style="width:100%; height:100%;">
 </div>
+
+To load this .bam file we have been working with to IGV, you also need to load the PDNC4 assembly, because that is what it is aligned to. I placed that assembly file in the training folder. Click on 'Genomes' then 'Load genome from file' and select the PDNC4 genome assembly file. Then you can load your .bam file. 
+
+You can also look for the neocentromere on PDNC4 Hap1 at coordinates 79000000-79500000.
