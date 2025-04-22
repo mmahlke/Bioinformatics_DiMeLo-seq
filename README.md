@@ -169,7 +169,6 @@ Think about the data itself. Each base reports either modified or unmodified. At
 However, that won't always be perfect. There is currently no standardized normalization method or enrichment quantification for $$\textnormal{\color{green}DiMeLo-seq}$$. 
 
 <br/> 
-<br/>
 
 **Some approaches for determining enrichment are:**
 
