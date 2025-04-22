@@ -160,17 +160,29 @@ One thing you may find to be missing at this stage is some sort of normalization
 
 Think about the data itself. Each base reports either modified or unmodified. At modified bases, we report a probability that the modification occurs. We filter out the bases with low probability. Next, we will measure the probable modifications at each position in each strand covering a region and calculate a fraction of enrichment. Theoretically, calculating a fraction of modified bases across a region should normalize for coverage level. 
 
-However, that won't always be perfect. There is no standardized normalization method for DiMelo-seq currently. 
+<div align="center">
+ <img src="https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/dimelo_ratio_norm-01.svg" alt="Dimelo_ratio" style="width:70%; height:70%;">
+</div>
+
+<br/>
+However, that won't always be perfect. There is currently no standardized normalization method or enrichment quantification for DiMelo-seq. 
+
+<br/> 
+<br/>
 
 **Some approaches for determining enrichment are:**
-1) Using emperical data to set a threshold
- + use other sequencing data to determine where your protein of interest is enriched genomically
- + use the same location's values in your DiMeLo data to set a threshold to apply across the genome   
-2) Using fold enrichment to set a threshold
- + You can extract the numbers of modified bases per position using [modkit](https://github.com/nanoporetech/modkit) to calculate enrichment values
- + You can also use this to transform the data into .bw tracks representing enrichment values
- + [fibertools](https://github.com/fiberseq/fibertools-rs) could also be useful for extracting raw data
-  + It's intended for determining the position of your protein of interest from the surrounding m6A signature 
+
+**1)** Using emperical data to set a threshold
+ + use other sequencing data to define area(s) where your protein of interest is enriched 
+ + observe those area(s) in your DiMeLo data to determine an enrichment threshold to apply across the genome
+<br/>
+ 
+**2)** Using fold enrichment to set a cutoff for enrichment
+ + You can extract the numbers of modified bases per position using [modkit](https://github.com/nanoporetech/modkit) to calculate fold-enrichment values
+   + There's no standard way to do this; you could try setting 'low' areas as 1 and then calculate the comparitive fold enrichment of 'high' values
+   + You can also use modkit to transform the data into .bw tracks representing enrichment values
+ + [fibertools](https://github.com/fiberseq/fibertools-rs) could also be useful for extracting and transforming raw data
+   + fibertools can be used to translate m6A signature into tracks of protein position 
 
 ## Making a virtual environment and visualizing modified bases
 
@@ -257,7 +269,9 @@ Specify the resources you want to use:
 </div>
 
 
-Here is an example of DiMeLo-seq data with mA in green and mC in red. The location is HOR1 on PDNC4 Chr4 Hap2, the copy of Chr4 with normal centromere. 
+Here is a snapshot of the DiMeLo-seq .bam file we have been working with, showing mA in green and mC in red. To view modified bases in 
+
+The location shown is HOR1 on PDNC4 Chr4 Hap2, the copy of Chr4 with normal centromere. 
 
 Can you tell where the **active centromere** is? You can see the high variability in CENP-A position even within the reads from one young clone. 
 
@@ -265,6 +279,6 @@ Can you tell where the **active centromere** is? You can see the high variabilit
  <img src="https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/active_cen4.png" alt="Dimelo at CEN4" style="width:100%; height:100%;">
 </div>
 
-To load this .bam file we have been working with to IGV, you also need to load the PDNC4 assembly, because that is what it is aligned to. I placed that assembly file in the training folder. Click on 'Genomes' then 'Load genome from file' and select the PDNC4 genome assembly file. Then you can load your .bam file. 
+To load this .bam file we have been working with to IGV, you also need to load the PDNC4 assembly, because that is what it is aligned to. I placed that assembly file in the training folder. Click on 'Genomes' then 'Load genome from file' and select the PDNC4 genome assembly file. Then you can load the .bam file. 
 
 You can also look for the neocentromere on PDNC4 Hap1 at coordinates 79000000-79500000.
