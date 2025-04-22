@@ -125,7 +125,7 @@ OK, our command to ```Dorado``` has run successfully and we now have a .bam file
 
 ## SAM and BAM tags
 
-Recall that .sam and .bam files are file types that have .fasta reads aligned to a genome assembly. The structure of .sam/.bam files are also discussed in the previous training session [here](https://github.com/mmahlke/YNAlab_Bioinformatics_training_pt2_ChIP_and_CR/blob/main/README.md). 
+Recall that .sam and .bam files are file types that have .fasta/.fasq reads aligned to a genome assembly. The structure of .sam/.bam files are also discussed in the previous training session [here](https://github.com/mmahlke/YNAlab_Bioinformatics_training_pt2_ChIP_and_CR/blob/main/README.md). 
 
 You can read more about .sam structure [here](https://samtools.github.io/hts-specs/SAMv1.pdf) and about .sam tags [here](https://samtools.github.io/hts-specs/SAMtags.pdf).
 
