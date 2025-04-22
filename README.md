@@ -43,7 +43,7 @@ $$\textnormal{\color{skyblue}ONT}$$ sequencing is performed on flow cells compos
 *Image modified from [Wang et al., 2021](https://www.nature.com/articles/s41587-021-01108-x)*
 
 
-While $$\textnormal{\color{skyblue}ONT}$$ is generally thought to be less accurate than PacBio long read sequencing, ONT reaches >99% accuracy in basecalling of individual reads, and the accuracy of consensus sequences reaches above 99% by increasing sequencing coverage. For instance, the CHM13 T2T assembly averages at **Q51**. For sequencing data, Q value (Phred score) is a standardized way to represent the quality of each base call in a sequencing read. Q values are calculated using the following formula: Q = -10 * log10(P), where P is the probability of error. 
+While $$\textnormal{\color{skyblue}ONT}$$ is generally thought to be less accurate than PacBio long read sequencing, ONT reaches >99% accuracy in $$\textnormal{\color{magenta}basecalling}$$ of individual reads, and the accuracy of consensus sequences reaches above 99% by increasing sequencing coverage. For instance, the CHM13 T2T assembly averages at **Q51**. For sequencing data, Q value (Phred score) is a standardized way to represent the quality of each base call in a sequencing read. Q values are calculated using the following formula: Q = -10 * log10(P), where P is the probability of error. 
 
 
 <div align="center">
@@ -59,7 +59,7 @@ While $$\textnormal{\color{skyblue}ONT}$$ is generally thought to be less accura
 </div>
 <br />
 
-$$\textnormal{\color{skyblue}ONT's}$$ modified basecalling is also exceedingly accurate, with DNA methylation being identified with an accuracy that meets or surpasses Bisulfite sequencing, which is considered to be the [most accurate method](https://pmc.ncbi.nlm.nih.gov/articles/PMC3233226/) for identifying DNA methylation. 
+$$\textnormal{\color{skyblue}ONT's}$$ modified $$\textnormal{\color{magenta}basecalling}$$ is also exceedingly accurate, with DNA methylation being identified with an accuracy that meets or surpasses Bisulfite sequencing, which is considered to be the [most accurate method](https://pmc.ncbi.nlm.nih.gov/articles/PMC3233226/) for identifying DNA methylation. 
 
 <div align="center">
  <img src="https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/bisulfite_ont.png" alt="mCG accuracy" style="width:30%; height:30%;">
@@ -72,9 +72,9 @@ Now that we have an idea what we are analyzing, let's talk about the data itself
 
 ## $$\textnormal{\color{green}DiMeLo-seq}$$ data analysis
 
-Raw $$\textnormal{\color{skyblue}ONT}$$ data is output in .pod5 (new) or .fast5 (old) formats and represents the raw changes in current measured at a given nanopore over the length of a DNA molecule passing through the nanopore. To translate that into a DNA sequence, we apply basecalling models that identify characteristic changes in current as different DNA bases,  producing long read sequences in .fasta format. There are currently basecalling models to identify 5mC, 5hmC, 4mC + 5mC and 6mA for DNA and m6A and pseudouridine for RNA.  
+Raw $$\textnormal{\color{skyblue}ONT}$$ data is output in .pod5 (new) or .fast5 (old) formats and represents the raw changes in current measured at a given nanopore over the length of a DNA molecule passing through the nanopore. To translate that into a DNA sequence, we apply $$\textnormal{\color{magenta}basecalling}$$ models that identify characteristic changes in current as different DNA bases,  producing long read sequences in .fasta format. There are currently $$\textnormal{\color{magenta}basecalling}$$ models to identify 5mC, 5hmC, 4mC + 5mC and 6mA for DNA and m6A and pseudouridine for RNA.  
 
-Most $$\textnormal{\color{skyblue}ONT}$$ data analysis uses $$\textnormal{\color{skyblue}ONT}$$-specific tools. The current tool for basecalling is [Dorado](https://github.com/nanoporetech/dorado). Basecalling is a resource-intensive process, so ```Dorado``` is built to be run on a graphical processing unit (GPU). **CPUs** (Central Processing Units) and **GPUs** (Graphics Processing Units) are both computing engines, but they are best used for different types of tasks. **CPUs** are designed for general-purpose computing, while **GPUs** are optimized for parallel processing and tasks that involve large datasets. This means that when we submit a script to the CRC cluster to perform basecalling with ```Dorado```, we must request that it be run on the GPU computing cluster. 
+Most $$\textnormal{\color{skyblue}ONT}$$ data analysis uses $$\textnormal{\color{skyblue}ONT}$$-specific tools. The current tool for $$\textnormal{\color{magenta}basecalling}$$ is [Dorado](https://github.com/nanoporetech/dorado). $$\textnormal{\color{magenta}Basecalling}$$ is a resource-intensive process, so ```Dorado``` is built to be run on a graphical processing unit (GPU). **CPUs** (Central Processing Units) and **GPUs** (Graphics Processing Units) are both computing engines, but they are best used for different types of tasks. **CPUs** are designed for general-purpose computing, while **GPUs** are optimized for parallel processing and tasks that involve large datasets. This means that when we submit a script to the CRC cluster to perform $$\textnormal{\color{magenta}basecalling}$$ with ```Dorado```, we must request that it be run on the GPU computing cluster. 
 
 Here is an examble of the SBATCH header for a script requesting to use CRC's GPU cluster:
 
@@ -91,7 +91,7 @@ Here is an examble of the SBATCH header for a script requesting to use CRC's GPU
 #SBATCH --output=/path/to/output/job.%J.out
 ```
 
-```Dorado``` is pretty simple to use. ```Dorado``` can basecall .pod5 raw data and align to an assembly of your choice all at once. Alignment will be performed using [minimap2](https://github.com/lh3/minimap2), an alignment tool built specifically for long-read data. However, there is another alignment tool called [winnowmap](https://github.com/marbl/Winnowmap), essentially a tweaked version of minimap designed to perform in repetitive regions like centromeres. However, in my hands, I've found winnowmap and minimap to perform similaryl at centromeres, but winnowmap to perform poorly outside of repetitive regions. To avoid complicating your analysis, I suggest aligning with minimap2 unless you find an issue with your data.
+```Dorado``` is pretty simple to use. ```Dorado``` can $$\textnormal{\color{magenta}basecall}$$ .pod5 raw data and align to an assembly of your choice all at once. Alignment will be performed using [minimap2](https://github.com/lh3/minimap2), an alignment tool built specifically for long-read data. However, there is another alignment tool called [winnowmap](https://github.com/marbl/Winnowmap), essentially a tweaked version of minimap designed to perform better in repetitive regions like centromeres. In my hands, I've found winnowmap and minimap to perform similarly at centromeres, but find winnowmap to perform poorly outside of repetitive regions. To avoid complicating your analysis, I suggest aligning with minimap2 unless you find an issue with your data.
 
 A typical set of instructions for ```Dorado``` are:
 
@@ -107,8 +107,8 @@ dorado basecaller hac,5mC_5hmC,6mA \
 
 ```
 Where
-+ ```hac,5mC_5hmC,6mA``` specifies to perform basecalling with the high-accuracy basecalling model ```hac``` and to include detection of both 5mC/5hmC in CG contexts and 6mA in all contexts
-+ ```--reference``` specifies the assembly to align to after basecalling
++ ```hac,5mC_5hmC,6mA``` specifies to perform $$\textnormal{\color{magenta}basecalling}$$ with the high-accuracy $$\textnormal{\color{magenta}basecalling}$$ model ```hac``` and to include detection of both 5mC/5hmC in CG contexts and 6mA in all contexts
++ ```--reference``` specifies the assembly to align to after $$\textnormal{\color{magenta}basecalling}$$
 + ```--verbose ``` specifies to give verbose output
 + ```sample_name.bam``` is the name we want to give the resulting aligned .bam file
 
@@ -125,7 +125,7 @@ OK, our command to ```Dorado``` has run successfully and we now have a .bam file
 
 ## SAM and BAM tags
 
-Recall that .sam and .bam files are file types that have .fasta reads aligned to a genome assembly. The structure of .sam/.bam files are also discussed in the previous training session [here]( [linktoprevious]). 
+Recall that .sam and .bam files are file types that have .fasta reads aligned to a genome assembly. The structure of .sam/.bam files are also discussed in the previous training session [here](https://github.com/mmahlke/YNAlab_Bioinformatics_training_pt2_ChIP_and_CR/blob/main/README.md). 
 
 You can read more about .sam structure [here](https://samtools.github.io/hts-specs/SAMv1.pdf) and about .sam tags [here](https://samtools.github.io/hts-specs/SAMtags.pdf).
 
@@ -147,16 +147,16 @@ The fields of the above .sam file are tab-delineated and give values for:
 5. ```0``` MAPQ mapping quality, 0 value indicates the read maps to other locations (repetitive cens)
 6. ```89S23=1D21......``` [CIGAR](https://jef.works/blog/2017/03/28/CIGAR-strings-for-dummies/) string, how the SAM/BAM format represents spliced alignments with insertions or deletions 
 7. ```*``` RNEXT, reference seq info for the next/paired read. * for no info, these reads are not paired
-8. ```0``` PNEXT, positional infor for the next read
+8. ```0``` PNEXT, positional info for the next read
 9. ```528``` TLEN, template length, distance between the leftmost and rightmost mapped bases of a sequenced DNA fragment
 10. ```GTTATG``` The sequence itself
-11. ```"&+*....``` ASCII of base quality. A base quality is the phred-scaled base error probability which equals −10 log10 Pr{base is wrong}. It will be the same length as the sequence
+11. ```"&+*....``` ASCII of base quality. Base quality is the phred-scaled base error probability which equals −10 log10 Pr{base is wrong}. It will be the same length as the sequence. Read more about ASCII format [here](https://help.basespace.illumina.com/files-used-by-basespace/quality-scores)
 12. ```MM:Z```  identifies modified bases. Here, ```C+h?``` reports the status of 5hmC and ```C+m?``` reports the status of 5mC. If mA is called, it's reported with ```A+a?```
 13. ```ML:B:C``` identifies the probability of each modification listed in the MM tag being correct. The continuous probability range 0.0 to 1.0 is remapped in equal sized portions to the discrete integers 0 to 255 inclusively. This is important for understanding how the values 0 to 255 encode to probability thresholds you may want to apply between probability 0 (unlikely) to probability 1.0 (certain).
 
 ## Normalizing and defining enrichment
 
-One thing you may find to be missing at this stage is some sort of normalization or statistical peak calling. When we think about what we are interested in getting out of DiMeLo-seq, it's a bit more complicated than ChIP-seq or CUT&RUN. We aren't enriching for reads with a pull down and amplifying them. We are inferring the position of a protein along single strands of DNA. We know there will be variability (in the context of centromeric proteins, at least) and we expect that. Yet, we still want to know wehre the proteins are **most likely** to be enriched.
+One thing you may find to be missing at this stage is some sort of normalization or statistical peak calling. When we think about what we are interested in getting out of $$\textnormal{\color{green}DiMeLo-seq}$$, it's a bit more complicated than ChIP-seq or CUT&RUN. We aren't enriching for reads with a pull down and amplifying them. We are inferring the position of a protein along single strands of DNA. We know there will be variability (in the context of centromeric proteins, at least) and we expect that. Yet, we still want to know wehre the proteins are **most likely** to be enriched.
 
 Think about the data itself. Each base reports either modified or unmodified. At modified bases, we report a probability that the modification occurs. We filter out the bases with low probability. Next, we will measure the probable modifications at each position in each strand covering a region and calculate a fraction of enrichment. Theoretically, calculating a fraction of modified bases across a region should normalize for coverage level. 
 
@@ -165,7 +165,7 @@ Think about the data itself. Each base reports either modified or unmodified. At
 </div>
 
 <br/>
-However, that won't always be perfect. There is currently no standardized normalization method or enrichment quantification for DiMelo-seq. 
+However, that won't always be perfect. There is currently no standardized normalization method or enrichment quantification for $$\textnormal{\color{green}DiMeLo-seq}$$. 
 
 <br/> 
 <br/>
@@ -184,27 +184,35 @@ However, that won't always be perfect. There is currently no standardized normal
  + [fibertools](https://github.com/fiberseq/fibertools-rs) could also be useful for extracting and transforming raw data
    + fibertools can be used to translate m6A signature into tracks of protein position 
 
-## Making a virtual environment and visualizing modified bases
+## Making a $$\textnormal{\color{teal}virtual environment}$$ and visualizing modified bases
 
 For this training, we will use ```dimelo``` package to access the modification data for us! Read more about the dimelo package [here](https://streetslab.github.io/dimelo/html/index.html) and access the package [here](https://github.com/streetslab/dimelo). 
 
-```dimelo``` visualization package is not pre-installed on the CRC cluster. We can install it in our own space by creating a virtual environment. A virtual environment is like a containerized test space that is on the CRC cluster but separated from the CRC cluster. It's a bit like "they can't mess with us" and "we can't mess with them", so everyone is safe. By safe, I mean safe to install new packages, test scripts, etc without harming the existing CRC infrastructure or running into complications from interacting with the CRC infrastructure. Once we build our virtual environment, we can install the ```dimelo``` package there and run it on our data. 
+```dimelo``` visualization package is not pre-installed on the CRC cluster. We can install it in our own space by creating a $$\textnormal{\color{teal}virtual environment}$$. A $$\textnormal{\color{teal}virtual environment}$$ is like a containerized test space that is on the CRC cluster but separated from the CRC cluster. It's a bit like "they can't mess with us" and "we can't mess with them", so everyone is safe. By safe, I mean safe to install new packages, test scripts, etc without harming the existing CRC infrastructure or running into complications from interacting with the CRC infrastructure. Once we build our $$\textnormal{\color{teal}virtual environment}$$, we can install the ```dimelo``` package there and run it on our data. 
 
-Making a virtual environment is a function of ```Python```. Python is a programming language. For other analyses, we have used the command-line interface to communicate directly to Linux/Unix, the CRC's operating system. ```Python``` adds a communication layer that allows us to generate more complex instructions or 'programs'. For instance, the ```dimelo``` package is written in ```Python``` programming language. 
+Making a $$\textnormal{\color{teal}virtual environment}$$ is a function of ```Python```. Python is a programming language. For other analyses, we have used the command-line interface to communicate directly to Linux, the CRC's operating system. ```Python``` adds a communication layer that allows us to generate more complex instructions or 'programs'. For instance, the ```dimelo``` package is written in ```Python``` programming language. 
 
-Let's set up a virtual environment with ```Python``` and install the ```dimelo``` package. 
+To keep things simple, I've installed the ```dimelo``` package into a $$\textnormal{\color{teal}virtual environment}$$ called ```dimelo_vis``` in the training directory.
+
+Let's all test whether we can use the package. If you cannot, or if you just want to practice making your own environment and installing the package yourself, please see the instructions linked [here](https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Scripts/dimelo_package_installation.txt).
 
 Log in to the cluster and request an interactive session on the htc cluster specifically.
 
 ```
 srun -t 2:00:00 --cluster htc --partition htc --cpus-per-task 8 --pty bash
 ```
-To keep things simple, I've installed the ```dimelo``` package into a virtual environment called ```dimelo_vis``` in the training directory. 
-Please test if you can use the package here. If not, install into your own working directory using the instructions linked [here](https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Scripts/dimelo_package_installation.txt).
 
-To run the pacakge, we need to first initiate ```python``` because the package is written in ```python```. We loaded the python module before, but now we are giving the module a command to start.
+To run the ```dimelo``` package, we need to load ```python``` because the package is written in ```python```. 
 ```
 module load python/3.7.0
+```
+Navigate to your working directory
+```
+cd /ix1/yarbely/<your_user>/training
+```
+And make a directory for today
+```
+mkdir ./Dimelo
 ```
 Then we activate our virtual environment by using ```source activate``` and including a path to the environment location. 
 ```
@@ -245,7 +253,12 @@ Where:
 + ```dotsize``` specifies the size of the dots in the genome browser plot showing individual reads
 + ```static=True``` allows the output to be written to a .pdf file rather than to be generated interactively in the terminal
 
-Now let's view the data that it created for us.  
+Now let's view the data that it created for us.  There will be three files:
++ a browser track plot showing read pileup over our selected coordinates with modified bases indicated along the reads
++ a histogram plotting aggregate m6A per position
++ a histogram plotting aggregate fraction m6A/A per position
+
+In the commands above, we are using the default window size to smooth the aggregate curves (1000 bp). You can change the smoothing window with ```smooth= ```.
 
 ## Viewing large data interactively with OnDemand and IGV
 
@@ -268,8 +281,10 @@ Specify the resources you want to use:
  <img src="https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/IGV_on_htc.png" alt="Requesting resources" style="width:80%; height:80%;">
 </div>
 
+Although we are requesting a number of cores in the above example, these large data can be cumbersome and if you remove a number and leave blank, you will recieve resources from the entire node. 
 
-Here is a snapshot of the DiMeLo-seq .bam file we have been working with, showing mA in green and mC in red. To view modified bases in 
+
+Here is a snapshot of the DiMeLo-seq .bam file we have been working with, showing mA in green and mC in red. To view modified bases in IGV, right click the file name and select 'color alignments by' then select 'base modification'. 
 
 The location shown is HOR1 on PDNC4 Chr4 Hap2, the copy of Chr4 with normal centromere. 
 
@@ -279,6 +294,6 @@ Can you tell where the **active centromere** is? You can see the high variabilit
  <img src="https://github.com/mmahlke/Bioinformatics_DiMeLo-seq/blob/main/Figures/active_cen4.png" alt="Dimelo at CEN4" style="width:100%; height:100%;">
 </div>
 
-To load this .bam file we have been working with to IGV, you also need to load the PDNC4 assembly, because that is what it is aligned to. I placed that assembly file in the training folder. Click on 'Genomes' then 'Load genome from file' and select the PDNC4 genome assembly file. Then you can load the .bam file. 
+To view this .bam file we have been working with to IGV, you first need to load the PDNC4 assembly, because that is what it is aligned to. I placed that assembly file in the training folder. Click on 'Genomes' then 'Load genome from file' and select the PDNC4 genome assembly file. Then you can load the D2Y_CENPA.bam file. 
 
 You can also look for the neocentromere on PDNC4 Hap1 at coordinates 79000000-79500000.
