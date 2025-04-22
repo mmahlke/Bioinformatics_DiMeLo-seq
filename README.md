@@ -165,6 +165,7 @@ Think about the data itself. Each base reports either modified or unmodified. At
 </div>
 
 <br/>
+
 However, that won't always be perfect. There is currently no standardized normalization method or enrichment quantification for $$\textnormal{\color{green}DiMeLo-seq}$$. 
 
 <br/> 
@@ -199,7 +200,7 @@ Let's all test whether we can use the package. If you cannot, or if you just wan
 Log in to the cluster and request an interactive session on the htc cluster specifically.
 
 ```
-srun -t 2:00:00 --cluster htc --partition htc --cpus-per-task 8 --pty bash
+srun -t 2:00:00 --cluster htc --partition htc --cpus-per-task 16 --pty bash
 ```
 
 To run the ```dimelo``` package, we need to load ```python``` because the package is written in ```python```. 
